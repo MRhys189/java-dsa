@@ -1,6 +1,7 @@
 package codewars;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 
 class MultiplicationTable {
@@ -25,7 +26,6 @@ class MultiplicationTable {
         int c = 0;
         while(r < x) {
             while (c < x) {
-                System.out.println("r: "+r+"\nc: "+c);
                 table[r][c] = (r+1) * (c+1);
                 c+=1;
             }
@@ -33,5 +33,9 @@ class MultiplicationTable {
             c = 0;
         }
         return table;
+     }
+
+     public static int[][] multiplicationTableWithIntStream(int n) {
+        return IntStream.rangeClosed(1, n).mapToObj(i -> IntStream.rangeClosed(1, n).map(j -> i * j).toArray()).toArray(int[][]::new);
      }
 }
