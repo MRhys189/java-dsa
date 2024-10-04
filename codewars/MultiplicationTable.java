@@ -17,7 +17,7 @@ class MultiplicationTable {
 
      public static void main(String[] args) {
         int[][] arr = multiplicationTable(3);
-        System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.deepToString(arr));
      }
 
      public static int [][] multiplicationTable(int x) {

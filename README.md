@@ -18,3 +18,30 @@ for(i = 0; i < num.length; i++) {
     n = n * 10 + (num.charAt(i) - '0');
 }
 
+### Convert int to String
+String.valueOf()
+
+### Java constructors
+```
+    class Main {
+    private String name;
+
+    // constructor
+    Main() {
+        System.out.println("Constructor Called:");
+        name = "Programiz";
+    }
+
+    public static void main(String[] args) {
+
+        // constructor is invoked while
+        // creating an object of the Main class
+        Main obj = new Main();
+        System.out.println("The name is " + obj.name);
+    }
+    }
+```
+Output
+`Constructor Called:`
+`The name is Programiz`
+
