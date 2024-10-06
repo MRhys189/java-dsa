@@ -41,6 +41,11 @@
     - Safer than field injection, particularly when forcing immutability of injected members through final.
     - Ability to decouple domain POJOs from Spring.
 
+## `Module 2: More Java Configuration`
+
+- We create the spring application context to inject java POJO (e.g. classes) but to do so, we have to create a configuration class which tells Spring how to 
+configured(their dependencies, how they should be initialized) these pojos. [Video: Spring Framework Essentials Module II - Quick start with Java Configuration]
+
 
 ## `Module 3: More Java Configuration`
 ### Using External Properties
@@ -90,9 +95,31 @@
 - We can combine `@Property` and `@PropertySource`
 
 ## Spring Expression Language (SpEL)
-- ![alt text](image.png)
+- ![alt text](./images/SpeL_examples.png)
+*TODO - REVIEW AGAIN*
 
 
+## `Module 4: Component Scanning`
+### Annotation based configurationn
+- Before, we were using explicit bean definition by defining every dependency we required:
+    > ![alt text](./images/explicit_bean_definition.png)
+- Now, we will use implicit configuration by using annotations. 
+    > ![alt text](./images/implicit_configuration.png)
+    > *the configuration is moved to our implementation classes (the business logic)*
+- We do this by `component scanning`
+    > ![alt text](./images/component_scanning.png)
+    >
+    >- *we add `@ComponentScan` so that our configuration class will scan the base package and look for any class indicated with `@Component`*
+    >- *when found, it will be initialized and added to the application context*
+
+#### How to make dependency injection in annotations
+- Using `@Autowired` annotation which works at the constructor(recommended), method and field level
+    > ![alt text](./images/autowired.png)
+    > 
+    >- *Why field injection is discouraged: http://olivergierke.de/2013/11/why-field-injection-is-evil/*
+
+
+## Others
 - Key features of Spring
     - DRY
     - Convention over configurationn
@@ -104,9 +131,6 @@
    - Creating them in the correct dependency order
    - Ensuring they are fully initialized before use
 • Each bean is given a unique id /name when initialized
-
-- We create the spring application context to inject java POJO (e.g. classes) but to do so, we have to create a configuration class which tells Spring how to 
-configured(their dependencies, how they should be initialized) these pojos. [Video: Spring Framework Essentials Module II - Quick start with Java Configuration]
 
 
 ### API Contracts & JSON
