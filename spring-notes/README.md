@@ -1,16 +1,22 @@
-> The `@Configuration` annotation tells Spring to use this class to configure Spring and Spring Boot itself. Any Beans specified in this class will now be available to Spring's Auto Configuration engine.
-> After enabling Spring security, tests may fail with the error 401: Unauthorized. In order to deal with this, we need to create a bean that supplies an authenticated user to the test that invokes a secure method. Spring's IoC container will find the bean and Spring Data will use it when needed.
-> Spring serves as a DI container, meaning objects created within spring context do not have to worry about connecting to each other. Spring will instantiate and inject dependencies into the objects
-> Application context is the dependency container that takes care of the lifecycle of the components
-> Default scope of a bean is `singleton` i.e., it will be initialized once and cached in the application context. If we compare the JVM reference, they will be the same.
-> How to handle multi-threading issues
-    — Use Stateless or Immutable beans
-    - Use synchronized (harder)
-    - Use a different scope
-> Best practice to separate application and infrastracture configuration
-> 
+# Spring Essentials
 
-Spring scopes available are:
+-  The `@Configuration` annotation tells Spring to use this class to configure Spring and Spring Boot itself. Any Beans specified in this class will now be available to Spring's Auto Configuration engine.<br>
+
+- After enabling Spring security, tests may fail with the error 401: Unauthorized. In order to deal with this, we need to create a bean that supplies an authenticated user to the test that invokes a secure method. Spring's IoC container will find the bean and Spring Data will use it when needed.
+
+- Spring serves as a DI container, meaning objects created within spring context do not have to worry about connecting to each other. Spring will instantiate and inject dependencies into the objects
+
+- Application context is the dependency container that takes care of the lifecycle of the components
+- Default scope of a bean is `singleton` i.e., it will be initialized once and cached in the application context. If we compare the JVM reference, they will be the same.
+
+- How to handle multi-threading issues
+    > Use Stateless or Immutable beans<br>
+    Use synchronized (harder)<br>
+    Use a different scope
+
+- Best practice to separate application and infrastracture configuration
+
+- Spring scopes available are:
     - `singleton`:(Default) Scopes a single bean definition to a single object instance for each Spring IoC container.
     - `prototype`: Scopes a single bean definition to any number of object instances (creates a new instance any time we need it).
     - `request`: Scopes a single bean definition to the lifecycle of a single HTTP request. That is, each HTTP request has its own instance of a bean created off the back of a single bean definition. Only valid in the context of a web-aware Spring ApplicationContext.
@@ -19,15 +25,15 @@ Spring scopes available are:
     - `websocket`: Scopes a single bean definition to the lifecycle of a WebSocket. Only valid in the context of a web-aware Spring ApplicationContext i.e. for web environment only.
     - You can also create your own scope by implementing the scope interface
 
-Dependency Injection Summary
-    • Your object is handed with what it needs to work
+- Dependency Injection Summary
+    - Your object is handed with what it needs to work
         - Frees it from the burden of resolving its dependencies
         - Simplifies your code, improves code reusability
-    • Promotes programming to interfaces
+    - Promotes programming to interfaces
         - Conceals implementation details of dependencies
-    • Improves testability
+    - Improves testability
         - Dependencies easily stubbed out for unit testing
-    • Allows for centralized control over object lifecycle
+    - Allows for centralized control over object lifecycle
         - Opens the door for new possibilities
 
 - Constructor injection is favored over field injection for several reasons:
@@ -35,25 +41,25 @@ Dependency Injection Summary
     - Safer than field injection, particularly when forcing immutability of injected members through final.
     - Ability to decouple domain POJOs from Spring.
 
-Spring Essentials
 
-`Module 3: More Java Configuration`
-## Using External Properties
-> Spring's Environment Abstraction - 1
-    • Environment bean represents loaded properties from runtime environment
-    • Properties derived from various sources, in this order:
+## `Module 3: More Java Configuration`
+### Using External Properties
+- Spring's Environment Abstraction - 1
+    - Environment bean represents loaded properties from runtime environment
+    - Properties derived from various sources, in this order:
         - JVM System Properties - System.getProperty()
         - System Environment Variables - System.getenv()
         - Java Properties
 
-> How to load properties from external environments
-    - ![alt text](./images/environment_injection.png)
-- alternatively, use `@Value` annotation instead of explicitly injecting the Environment dependency, which is already created and available in the application context
-    - ![alt text](images/value_annotation.png)
-    - 
+- How to load properties from external environments:
+    > ![alt text](./images/environment_injection.png)
 
-> If you have an external property file, you have to tell spring that we want to add it to the environment for it to be aware of it. This is a property source and we use the `@PropertySource` annotation
-> There are 3 prefixes we can use to add external files:
+- Alternatively, use `@Value` annotation instead of explicitly injecting the Environment dependency, which is already created and available in the application context
+    > ![alt text](images/value_annotation.png)
+
+
+- If you have an external property file, you have to tell spring that we want to add it to the environment for it to be aware of it. This is a property source and we use the `@PropertySource` annotation
+- There are 3 prefixes we can use to add external files:
     - classpath
         - get file from the classpath
         - usually located in src/main/resources e.g (classpath:/com/organization is -> src/main/resource:/com/organization)
@@ -61,24 +67,25 @@ Spring Essentials
         - allows us to define a relative or absolute path e.g. file:/config/local.properties loads a file from the file system from a relative path
     - http
 
-## Spring Profiles
-- User @Profile annotation
-    ![alt text](./images/activating_profiles.png)
-- you can activate more than 1 profiles
+### Spring Profiles
+- User `@Profile` annotation
+
+    > ![alt text](./images/activating_profiles.png)
+- You can activate more than 1 profiles
 - Profiles are activated at runtime by
     1. using system property via command line
-        """ -Dspring.profiles.active=profile1,profile2 """
+        > -Dspring.profiles.active=profile1,profile2
     2. using system property programmatically
-        """
-        System.setProperty("spring.profiles.active", "embedded,jpa");
+        >System.setProperty("spring.profiles.active", "embedded,jpa");
         SpringApplication.run(AppConfig.class);
-         """
+         
     3. `@ActiveProfiles` but can only be used in a test environment
 
-- The first and second in ([alt text](./images/which_profile_is_active.png)) will be selected because:
+- In the below image, the first and second will be selected because:
     1. The first does not belong to any profile and will always be initialized
     2. The second one because it belongs to the profile that has been explicitly activated
-    ![alt text](image.png)
+    
+        > ![alt text](./images/which_profile_is_active.png)
 
 - We can combine `@Property` and `@PropertySource`
 
@@ -86,27 +93,27 @@ Spring Essentials
 - ![alt text](image.png)
 
 
-Key features of Spring
-> DRY
-> Convention over configurationn
-> Testability
-> Separation of concerns
+- Key features of Spring
+    - DRY
+    - Convention over configurationn
+    - Testability
+    - Separation of concerns
 
 - Spring separates application configuration from application objects (beans)
 - Spring manages your application objects by:
-   > Creating them in the correct dependency order
-   > Ensuring they are fully initialized before use
+   - Creating them in the correct dependency order
+   - Ensuring they are fully initialized before use
 • Each bean is given a unique id /name when initialized
 
 - We create the spring application context to inject java POJO (e.g. classes) but to do so, we have to create a configuration class which tells Spring how to 
 configured(their dependencies, how they should be initialized) these pojos. [Video: Spring Framework Essentials Module II - Quick start with Java Configuration]
 
 
-__API Contracts & JSON__
- API contracts are a popular means for API providers and consumers to agree upon how an API will behave
-There are 2 types of API contracts:
-- Consumer Driven Contracts 
-- Provider Driven Contracts
+### API Contracts & JSON
+- API contracts are a popular means for API providers and consumers to agree upon how an API will behave
+- There are 2 types of API contracts:
+    - Consumer Driven Contracts 
+    - Provider Driven Contracts
 
 API contracts communicate the behaviour or a REST API.
 
@@ -194,8 +201,7 @@ __The Red, Green, Refactor Loop__
 
 
 
-
-Behold Auto Configuration and Construction Injection!
+### <b> Behold Auto Configuration and Construction Injection!</b>
 - Spring's Auto Configuration is utilizing its dependency injection (DI) framework, specifically constructor injection, to supply e.g, a controller with the correct implementation of e.g., a repository at runtime.
 - Clues such as `NoSuchBeanDefinitionException`, `No qualifying bean,` and `expected at least 1 bean which qualifies as autowire candidate` tell us that Spring is trying to find a properly configured class to provide during the dependency injection phase of Auto Configuration, but none qualify.
 - An idempotent operation is defined as one which, if performed more than once, results in the same outcome. In a REST API, an idempotent operation is one that even if it were to be performed several times, the resulting data on the server would be the same as if it had been performed only once.  
