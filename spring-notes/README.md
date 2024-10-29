@@ -113,11 +113,45 @@ configured(their dependencies, how they should be initialized) these pojos. [Vid
     >- *when found, it will be initialized and added to the application context*
 
 #### How to make dependency injection in annotations
-- Using `@Autowired` annotation which works at the constructor(recommended), method and field level
-    > ![alt text](./images/autowired.png)
-    > 
-    >- *Why field injection is discouraged: http://olivergierke.de/2013/11/why-field-injection-is-evil/*
+1. Using `@Autowired` annotation which works at the constructor(recommended), method and field level
+        > ![alt text](./images/autowired.png)
+        > 
+        >- *Why field injection is discouraged: http://olivergierke.de/2013/11/why-field-injection-is-evil/*
+    - By default, the dependency must be present. If it's not, an exception is thrown. We can :
+        - set `required` attribute to `false` to override the default behaviour
+            > ![alt text](image.png)
+        - use Java `Optionals<T>`
+            > ![alt text](./images/required_vs_optionals.png)
 
+    #### *Constructor vs Setter injection*
+    > ![alt text](./images/constructor_vs_setter_injection.png)
+    >- Dependencies defined in the constructor are mandatory. Component cannot be initialized without them.
+
+    #### *Autowiring and Disambiguation*
+    -  Say we have 2 components(***JpaAccountRepository*** & ***JdbcAccountRepository***) that implement the same interface(***AccountRepository***) and both are annotated with `@Component`
+    > ![alt text](./images/autowiring_vs_disambiguation.png)
+    - The service(***TransferServiceImpl***) has a constructor that accepts an interface. The constructor has been annotated with `@Autowired`. The autowiring is by **type** i.e., spring will go to the application context and search for the bean by type. In this case the type is the ***AccountRepository***.
+    - We get an error `NoSuchBeanDefinitionException` because there is no unique bean. The error can be misleading
+    - The work-around is:
+        > 1. *Autowire by name*
+        > ![alt text](./images/qualifiers.png)
+    - If we don't define component names:
+        - Names are auto-generated
+            - De-capitalized non-qualified class name by default
+            - But will pick up implementation details from class name
+        - **Recommendation: never rely on generated names!**
+    - When component names are specified:
+        - Allow disambiguation when 2 bean classes implement the same interface
+    > ![alt text](./images/component_naming.png)
+
+2. Using `@Value` annotation
+> ![alt text](./images/injection_with_value_annotation.png)
+- We annotate @Autowired if we only have a single constructor. This is optional
+- Spring will go to the **environment** instead of the **application context** in the above image
+
+
+#### A comparasion of annotations and configurations
+![alt text](./images/annotations_and_configurations.png)
 
 ## Others
 - Key features of Spring
